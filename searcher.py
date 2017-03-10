@@ -26,14 +26,14 @@ con = lite.connect('groupData.db')
 # Modified given code for indexing - just changed schema and print out
 def search(indexer, searchTerm):
     with indexer.searcher() as searcher:
-        query = MultifieldParser(["Name", "Image", "Description", "Source"], schema=indexer.schema, termclass=Variations).parse(searchTerm)
+        query = MultifieldParser(["Name", "Category", "Image", "Description", "Source"], schema=indexer.schema, termclass=Variations).parse(searchTerm)
         results = searcher.search(query)
         print("\nLength of results: " + str(len(results)))
         print 'Here are the first 10 results:\n'
-        print '{:<25}{:<60}{:<60}{:<60}'.format('Name', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)')
+        print '{:<25}{:<9}{:<60}{:<60}{:<60}'.format('Name', 'Category', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)')
         for line in results:
             #print (line['Name'] + " || " + line['Image'] + " || " + line['Description'] + " || " + line['Source'])
-            print '{:<25}{:<60}{:<60}{:<60}'.format(line['Name'][0:24], line['Image'][0:59], line['Description'][0:59], line['Source'][0:59])
+            print '{:<25}{:<9}{:<60}{:<60}{:<60}'.format(line['Name'][0:24], line['Category'], line['Image'][0:59], line['Description'][0:59], line['Source'][0:59])
 #######                 End Search                     ########
 
 #######                 Start Indexing                 ########
@@ -41,16 +41,16 @@ def search(indexer, searchTerm):
 def index():
     print ('\nCreating new index...\n')
     c = con.cursor()
-    schema = Schema(Name=TEXT(stored=True), Image=TEXT(stored=True), Description=TEXT(stored=True), Source=TEXT(stored=True))
+    schema = Schema(Name=TEXT(stored=True), Category=TEXT(stored=True), Image=TEXT(stored=True), Description=TEXT(stored=True), Source=TEXT(stored=True))
     indexer = create_in('indexDir', schema)
 
     writer = indexer.writer()
     for row in c.execute('SELECT * FROM Sweets'):
-        writer.add_document(Name=row[0], Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category='Sweets', Image=row[3], Description=row[2], Source=row[1])
     for row in c.execute('SELECT * FROM Fruits'):
-        writer.add_document(Name=row[0], Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category='Fruits', Image=row[3], Description=row[2], Source=row[1])
     for row in c.execute('SELECT * FROM Desserts'):
-        writer.add_document(Name=row[0], Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category='Desserts', Image=row[3], Description=row[2], Source=row[1])
     writer.commit()
     return indexer
 #######                 End Indexing                  ########
