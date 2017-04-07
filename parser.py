@@ -112,7 +112,7 @@ def tableFromWiki(table, category):
                     image = k.get('source')
                 if len(description) == 0:
                     cur.execute("INSERT INTO " + table + "(Name, Source, Description, Image) VALUES(?, ?, ?, ?)",
-                                (title[0], url[0], None, str(image)))
+                                (title[0], url[0], 'None', str(image)))
                 else:
                     cur.execute("INSERT INTO " + table + "(Name, Source, Description, Image) VALUES(?, ?, ?, ?)",
                             (title[0], url[0], description[0], str(image)))

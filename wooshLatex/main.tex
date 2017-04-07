@@ -2,6 +2,7 @@
 \usepackage{geometry}
 \usepackage{hyperref}
 \geometry{letterpaper}
+\usepackage{graphicx}
 
 \subject{Web Data - CS 483}
 \title{Whoosh Indexing Report}
@@ -52,7 +53,16 @@ Both Image and Source are string URLs
 
 \subsection*{Size}
 Our database contains 1077 tuples in total, with 403 Desserts, 372 Sweets, and 302 Fruits.
-
-\subsection*{Examples}
-
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{screenshotTwo.png}
+    \caption{Screenshot of a an example of a search. This searches the index for mango.}
+    \label{fig:my_label}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{screenshotOne.png}
+    \caption{Screenshot of a an example of a search. This searches the index for citrus OR cake OR chocolate.}
+    \label{fig:my_label}
+\end{figure}
 \end{document}

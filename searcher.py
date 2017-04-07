@@ -11,16 +11,21 @@ from whoosh.query import Variations
 from whoosh.index import create_in, open_dir
 from whoosh.fields import *
 from whoosh.qparser import MultifieldParser
+import platform
+import textwrap
 
 # input() is python 3 version of raw_input() in python 2
 # this makes code work with both python 2 and 3
-try:
-    import __builtin__
-    input = getattr(__builtin__, 'raw_input')
-except (ImportError, AttributeError):
-    pass
+
 
 con = lite.connect('groupData.db')
+if platform.python_version() < str(3):
+    try:
+        import __builtin__
+
+        input = getattr(__builtin__, 'raw_input')
+    except (ImportError, AttributeError):
+        pass
 
 #######                 Start Search                 ########
 # Modified given code for indexing - just changed schema and print out
@@ -29,11 +34,12 @@ def search(indexer, searchTerm):
         query = MultifieldParser(["Name", "Category", "Image", "Description", "Source"], schema=indexer.schema, termclass=Variations).parse(searchTerm)
         results = searcher.search(query)
         print("\nLength of results: " + str(len(results)))
-        print 'Here are the first 10 results:\n'
-        print '{:<25}{:<9}{:<60}{:<60}{:<60}'.format('Name', 'Category', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)')
+        print ('Here are the first 10 results:\n')
+        print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format('Name', 'Category', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)'))
         for line in results:
-            #print (line['Name'] + " || " + line['Image'] + " || " + line['Description'] + " || " + line['Source'])
-            print '{:<25}{:<9}{:<60}{:<60}{:<60}'.format(line['Name'][0:24], line['Category'], line['Image'][0:59], line['Description'][0:59], line['Source'][0:59])
+            # print (line['Name'] + " || " + line['Image'] + " || " + line['Description'] + " || " + line['Source'])
+            print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(textwrap.dedent(line['Name'][0:25]).encode('utf-8'), line['Category'], line['Image'][0:59], textwrap.dedent(line['Description'][0:59]).encode('utf-8'), line['Source'][0:59]))
+
 #######                 End Search                     ########
 
 #######                 Start Indexing                 ########
@@ -46,18 +52,17 @@ def index():
 
     writer = indexer.writer()
     for row in c.execute('SELECT * FROM Sweets'):
-        writer.add_document(Name=row[0], Category='Sweets', Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category=u'Sweets', Image=row[3], Description=row[2], Source=row[1])
     for row in c.execute('SELECT * FROM Fruits'):
-        writer.add_document(Name=row[0], Category='Fruits', Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category=u'Fruits', Image=row[3], Description=row[2], Source=row[1])
     for row in c.execute('SELECT * FROM Desserts'):
-        writer.add_document(Name=row[0], Category='Desserts', Image=row[3], Description=row[2], Source=row[1])
+        writer.add_document(Name=row[0], Category=u'Desserts', Image=row[3], Description=row[2], Source=row[1])
     writer.commit()
     return indexer
 #######                 End Indexing                  ########
 
 #######          START INTERACTIVE SEARCH             ######## 
 def main():
-
     # remake index if told to or one does not already exist
     if not os.path.exists("indexDir"):
         os.mkdir("indexDir")
