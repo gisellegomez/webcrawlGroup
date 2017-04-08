@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+
 * {
 	padding: 0;
 	margin: 0 auto;
 }
 
 body {
-	font-family: sans-serif;
+	font-family: 'Varela Round', sans-serif;
 	font-size: 1.2rem;
 	background: #fff;
 }
@@ -16,7 +18,7 @@ header {
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: #d25;
+	background-color: #c12;
 	display: flex;
 	align-items: center;
 	vertical-align: center;
@@ -68,6 +70,15 @@ footer {
 	left: 0;
 	right: 0;
 	bottom: 0;
+
+}
+
+#viewBox > img {
+	height: 100vh;
+	width: auto;
+}
+#viewBox > span {
+	color: #fff;
 }
 
 @media (min-width:1000px) {
@@ -103,9 +114,15 @@ footer {
 
 .result > span {
 	position: absolute;
-	padding: 0.5rem;
-	background-color: #d25;
+	padding: 0.5rem 1rem 0.5rem 1rem;
+	background-color: #c12;
 	color: #fff;
+	pointer-events: none;
+}
+
+.noscroll {
+  height: 100%;
+  overflow: hidden;
 }
 
 .box {
