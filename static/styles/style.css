@@ -70,14 +70,68 @@ footer {
 	left: 0;
 	right: 0;
 	bottom: 0;
-
+	overflow-y: auto;
 }
 
-#viewBox > img {
-	height: 100vh;
-	width: auto;
+#viewBox > div {
+	position: relative;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	color: #000;
 }
-#viewBox > span {
+
+.widescreen {
+	height: auto;
+	width: 100vh;
+}
+
+.portrait {
+	height: auto;
+	width: 100vw;
+}
+
+#boxImg {
+	width: 100%;
+	height: auto;
+	margin-bottom: 1rem;
+}
+
+#boxTitle {
+	position: absolute;
+	font-size: 1.5rem;
+}
+
+.boxHeader {
+	padding: 0.5rem 1rem 0.5rem 1rem;
+	background-color: #c12;
+	color: #fff;
+	margin-bottom: 1rem;
+}
+
+#boxNutrition {
+	margin: 0 1rem 1rem 1rem;
+}
+
+#boxDetails {
+	margin: 0 1rem 1rem 1rem;
+}
+
+#boxDetails > p {
+	margin-bottom: 1rem;
+}
+
+#viewBoxBtn {
+	font-size: 1.5rem;
+	padding: 0.5rem 1rem 0.5rem 1rem;
+	position: absolute;
+	top: 0;
+	right: 0;
+	outline: none;
+	border: none;
+	background-color: #c12;
 	color: #fff;
 }
 

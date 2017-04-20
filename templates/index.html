@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name=“viewport” content=“user-scalable=no initial-scale=1.0"/>
+		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/style.css') }}">
+		<meta charset='utf-8' />
+		<title>Sweetnums</title>
+	</head>
+	<body>
+		<header>
+			<input type="text" id="searchField" placeholder="Search">
+		</header>
+		<div id="resultsContainer"></div>
+		<footer>
+			<span id="feedback">You hungry?</span>
+		</footer>
+		</div>
+		<div id="viewBox" style="display: none;">
+			<div>
+				<span id="boxTitle" class="boxHeader"></span>
+				<button id="viewBoxBtn">X</button>
+				<img src="" id="boxImg">
+				<span class="boxHeader">Nutritional Facts</span>
+				<section id="boxNutrition">
+					Nutritional Facts Here...
+				</section>
+				<span class="boxHeader">Description</span>
+				<section id="boxDetails">
+					Details in here...
+				</section>
+			</div>
+		</div>
+		<script type="text/javascript" src="{{ url_for('static',filename='scripts/index.js') }}"></script>
+	</body>
+</html>

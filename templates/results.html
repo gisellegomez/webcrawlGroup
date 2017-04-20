@@ -1,35 +1,6 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
-		<title>Results</title>
-	</head>
-
-	<body>
-
-		<h2>
-			<div id='redText'>You</div> <div class='blueText'>searched</div> for: {{query}}
-		</h2>
-		
-		<table>
-			<thead>
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for fName, lName in results %}
-				<tr>
-					<td>{{fName}}</td>
-					<td>{{lName}}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		<form method="post" action="{{ url_for('index') }}">
-			<input type="submit" value="Return" />
-		</form>	
-	</body>	
-</html>
+{% for r in results %}
+	<div class="result" data-index="{{ loop.index0 }}">  {# current index of loop (the 'index0' ensures 0-indexed value) #}
+		<span>{{ r[0] }}</span> {# Name #}
+		<img src="{{ r[2] }}"> {# Image URL #}
+	</div>
+{% endfor %}
