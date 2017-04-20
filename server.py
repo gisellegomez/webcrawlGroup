@@ -1,5 +1,21 @@
 from flask import Flask, render_template, url_for, request
 from searcher import *
+import re
+
+rgxThumb = re.compile(r"/thumb/", re.IGNORECASE)
+rgxJpg = re.compile(r"\.jpg/.+$")
+rgxJPG = re.compile(r"\.JPG/.+$")
+
+def getRealImgURL(url):
+
+	print url
+	realURL = rgxThumb.sub('/', url)
+	realURL = rgxJpg.sub('.jpg', realURL)
+	realURL = rgxJPG.sub('.JPG', realURL)
+
+	print realURL
+	return realURL
+
 
 app = Flask(__name__)
 
@@ -8,7 +24,7 @@ def index():
 	print "Someone is at the home page."
 	return render_template('index.html')
 
-@app.route('/description/', methods=['POST'])
+@app.route('/description', methods=['POST'])
 def my_link():
 	index = request.form.get('n')
 	print index
@@ -20,20 +36,23 @@ def my_link():
 	else:
 		return render_template('description.html', body=body), 200
 
-@app.route('/results/', methods=['POST'])
+@app.route('/results', methods=['POST'])
 def results():
 	# params:
 	# query (search terms)
 	query = request.form.get('query')
 	# index (how many results the client already has)
-	index = request.form.get('index')
+	index = int(request.form.get('index'))
 	# count (how many results the client wants back)
-	count = request.form.get('count')
+	count = int(request.form.get('count'))
 
 	indexer = open_dir("indexDir")
 	
 	results = search(indexer, query)
-	print(results)
+
+	for result in results:
+		result[2] = getRealImgURL(result[2])
+
 	if not results:
 		# no results for search
 		return '', 404

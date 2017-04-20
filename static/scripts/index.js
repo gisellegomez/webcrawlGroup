@@ -80,7 +80,7 @@
 					}
 				}
 		    };
-			request.open('POST', '/search', true);
+			request.open('POST', '/results', true);
 			request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			request.responseType = 'text';
 			request.send('query=' + string + '&index=' + index + '&count=' + count);

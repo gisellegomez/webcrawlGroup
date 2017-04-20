@@ -47,18 +47,26 @@ def search(indexer, searchTerm):
                     str(textwrap.dedent(line['Name'][0:25]).encode('utf-8'), 'utf-8'), line['Category'],
                     line['Image'][0:59], str(textwrap.dedent(line['Description'][0:59]).encode('utf-8'), 'utf-8'),
                     line['Source'][0:59]))
-                resultArray.append([str(textwrap.dedent(line['Name'][0:25]).encode('utf-8'), 'utf-8'), line['Category'],
-                    line['Image'][0:59], str(textwrap.dedent(line['Description'][0:59]).encode('utf-8'), 'utf-8'),
-                    line['Source'][0:59]])
+                resultArray.append([
+                    str(textwrap.dedent(line['Name']).encode('utf-8'), 'utf-8'),
+                    line['Category'],
+                    line['Image'],
+                    str(textwrap.dedent(line['Description']).encode('utf-8'), 'utf-8'),
+                    line['Source']
+                ])
 
             else:
                 print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(
                     textwrap.dedent(line['Name'][0:25]).encode('utf-8'), line['Category'],
                     line['Image'][0:59], textwrap.dedent(line['Description'][0:59]).encode('utf-8'),
                     line['Source'][0:59]))
-                resultArray.append([ textwrap.dedent(line['Name'][0:25]).encode('utf-8'), line['Category'],
-                    line['Image'][0:59], textwrap.dedent(line['Description'][0:59]).encode('utf-8'),
-                    line['Source'][0:59]])
+                resultArray.append([
+                    textwrap.dedent(line['Name']).encode('utf-8'),
+                    line['Category'],
+                    line['Image'],
+                    textwrap.dedent(line['Description']).encode('utf-8'),
+                    line['Source']
+                ])
         return resultArray
 
 #######                 End Search                     ########
