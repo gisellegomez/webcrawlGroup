@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, request
-from flask.ext.api import status
 from searcher import *
 
 app = Flask(__name__)
@@ -17,9 +16,9 @@ def my_link():
 	# split string description into list of paragraphs
 	body = PLEASE_REPLACE_ME[index][3].splitlines()
 	if not body:
-		return '', status.HTTP_404_NOT_FOUND
+		return '', 404
 	else:
-		return render_template('description.html', body=body), status.HTTP_200_OK
+		return render_template('description.html', body=body), 200
 
 @app.route('/results/', methods=['POST'])
 def results():
@@ -37,13 +36,13 @@ def results():
 	print(results)
 	if not results:
 		# no results for search
-		return '', status.HTTP_404_NOT_FOUND
-	else if len(results) is count:
+		return '', 404
+	elif len(results) is count:
 		# client already has all results
-		return '', status.HTTP_204_NO_CONTENT
+		return '', 204
 	else:
 		# render results for client
-		return render_template('results.html', results=results[index:count]), status.HTTP_200_OK
+		return render_template('results.html', results=results[index:count]), 200
 
 if __name__ == '__main__':
 	app.run(debug=True)
