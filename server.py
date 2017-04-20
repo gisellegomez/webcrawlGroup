@@ -8,12 +8,10 @@ rgxJPG = re.compile(r"\.JPG/.+$")
 
 def getRealImgURL(url):
 
-	print url
 	realURL = rgxThumb.sub('/', url)
 	realURL = rgxJpg.sub('.jpg', realURL)
-	realURL = rgxJPG.sub('.JPG', realURL)
+	realURL = rgxJPG.sub('.JPG', realURL) # wikipedia urls are case sensitive
 
-	print realURL
 	return realURL
 
 
