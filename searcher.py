@@ -35,18 +35,18 @@ if platform.python_version() < str(3):
 def search(indexer, searchTerm):
     with indexer.searcher() as searcher:
         query = MultifieldParser(["Name", "Category", "Image", "Description", "Source"], schema=indexer.schema, termclass=Variations).parse(searchTerm)
-        results = searcher.search(query)
+        results = searcher.search(query, limit=None)
         resultArray = []
-        print("\nLength of results: " + str(len(results)))
-        print ('Here are the first 10 results:\n')
-        print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format('Name', 'Category', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)'))
+        # print("\nLength of results: " + str(len(results)))
+        # print ('Here are the first 10 results:\n')
+        # print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format('Name', 'Category', 'Image URL (may be shortened)', 'Description (may be shortened)', 'Source URL (may be shortened)'))
         for line in results:
             # print (line['Name'] + " || " + line['Image'] + " || " + line['Description'] + " || " + line['Source'])
             if python == False:
-                print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(
-                    str(textwrap.dedent(line['Name'][0:25]).encode('utf-8'), 'utf-8'), line['Category'],
-                    line['Image'][0:59], str(textwrap.dedent(line['Description'][0:59]).encode('utf-8'), 'utf-8'),
-                    line['Source'][0:59]))
+                # print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(
+                #     str(textwrap.dedent(line['Name'][0:25]).encode('utf-8'), 'utf-8'), line['Category'],
+                #     line['Image'][0:59], str(textwrap.dedent(line['Description'][0:59]).encode('utf-8'), 'utf-8'),
+                #     line['Source'][0:59]))
                 resultArray.append([
                     str(textwrap.dedent(line['Name']).encode('utf-8'), 'utf-8'),
                     line['Category'],
@@ -56,10 +56,10 @@ def search(indexer, searchTerm):
                 ])
 
             else:
-                print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(
-                    textwrap.dedent(line['Name'][0:25]).encode('utf-8'), line['Category'],
-                    line['Image'][0:59], textwrap.dedent(line['Description'][0:59]).encode('utf-8'),
-                    line['Source'][0:59]))
+                # print ('{:<25}{:<9}{:<60}{:<60}{:<60}'.format(
+                #     textwrap.dedent(line['Name'][0:25]).encode('utf-8'), line['Category'],
+                #     line['Image'][0:59], textwrap.dedent(line['Description'][0:59]).encode('utf-8'),
+                #     line['Source'][0:59]))
                 resultArray.append([
                     textwrap.dedent(line['Name']).encode('utf-8'),
                     line['Category'],

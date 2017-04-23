@@ -125,13 +125,12 @@
 				resultsContainer.innerHTML = "";
 
 			} else if (searchField.value !== lastSearch) {
-
+			    resultsContainer.innerHTML = "";
 				waitingForResults = true;
 				lastSearch = searchField.value;
 				feedback.innerHTML = "Waiting for results..."
 				haveAllResults = false;
-
-				requestSearch(searchField.value, resultsContainer.children.length, MAX_RESULTS);
+                requestSearch(searchField.value, resultsContainer.children.length, MAX_RESULTS);
 			}
 
 		},
@@ -160,9 +159,15 @@
 			return false;
 		},
 
-		getNutritionalInfo = function() {
-			// TODO
-			return "Such nutrition!</br>Much wow!";
+		getNutritionalInfo = function(value) {
+//			results =
+            console.log(value);
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://api.nal.usda.gov/ndb/search/", false);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.send('format=xml&q='+searchField.value+'&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF');
+//            console.log(xhr.response)
+			return xhr.responseText;
 		},
 
 		showViewBox = function(event) {
@@ -172,7 +177,7 @@
 				viewBox.style.top = scrolledAmount + "px";
 				boxImg.src = event.target.src; // set image source
 				boxTitle.innerHTML = event.target.previousElementSibling.innerHTML;
-				boxNutrition.innerHTML = getNutritionalInfo();
+				boxNutrition.innerHTML = getNutritionalInfo(boxTitle.innerHTML.value);
 				boxDetails.innerHTML = "Retrieving details...";
 
 				// request full text from server
