@@ -106,6 +106,7 @@ footer {
 
 .boxHeader {
 	padding: 0.5rem 1rem 0.5rem 1rem;
+	width: 90%;
 	background-color: #c12;
 	color: #fff;
 	margin-bottom: 1rem;
@@ -123,10 +124,19 @@ footer {
 	margin-bottom: 1rem;
 }
 
+#boxSources {
+	margin: 0 1rem 1rem 1rem;
+}
+
+#boxSources > p {
+	margin-bottom: 1rem;
+}
+
 #viewBoxBtn {
 	font-size: 1.5rem;
 	padding: 0.5rem 1rem 0.5rem 1rem;
 	position: absolute;
+	height: 45px;
 	top: 0;
 	right: 0;
 	outline: none;

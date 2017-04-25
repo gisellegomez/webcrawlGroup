@@ -115,6 +115,31 @@
 			delta = window.performance.now();
 		}
 
+		requestSources = function(index) {
+			var request = new XMLHttpRequest(),
+				delta;
+
+			request.onreadystatechange = function () {
+				if (request.readyState === XMLHttpRequest.DONE) {
+					speedTest(delta);
+					switch (request.status) {
+						case 200: // request returned successfully
+							boxSources.innerHTML = request.response;
+							break;
+						default:
+							boxSources.innerHTML = 'Cannot retrieve Sources.';
+							break;
+					}
+				}
+		    };
+			request.open('POST', '/sources', true);
+			request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			request.responseType = 'text';
+			request.send('n=' + index);
+
+			delta = window.performance.now();
+		}
+
 		handleSearch = function(event) {
 
 			// empty search resets page
@@ -160,14 +185,28 @@
 		},
 
 		getNutritionalInfo = function(value) {
-//			results =
-            console.log(value);
-            xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://api.nal.usda.gov/ndb/search/", false);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhr.send('format=xml&q='+searchField.value+'&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF');
-//            console.log(xhr.response)
-			return xhr.responseText;
+			var request = new XMLHttpRequest(),
+				delta;
+
+			request.onreadystatechange = function () {
+				if (request.readyState === XMLHttpRequest.DONE) {
+					speedTest(delta);
+					switch (request.status) {
+						case 200: // request returned successfully
+							boxNutrition.innerHTML = request.response;
+							break;
+						default:
+							boxNutrition.innerHTML = 'Cannot retrieve Nutrition.';
+							break;
+					}
+				}
+		    };
+			request.open('POST', '/nutrition', true);
+			request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			request.responseType = 'text';
+			request.send('n=' + value);
+            console.log(value)
+			delta = window.performance.now();
 		},
 
 		showViewBox = function(event) {
@@ -177,11 +216,15 @@
 				viewBox.style.top = scrolledAmount + "px";
 				boxImg.src = event.target.src; // set image source
 				boxTitle.innerHTML = event.target.previousElementSibling.innerHTML;
-				boxNutrition.innerHTML = getNutritionalInfo(boxTitle.innerHTML.value);
+
+				getNutritionalInfo(searchField.value);
 				boxDetails.innerHTML = "Retrieving details...";
 
 				// request full text from server
 				requestDescription(event.target.parentElement.dataset.index);
+
+				boxSources.innerHTML = "Retrieving details...";
+				requestSources(event.target.parentElement.dataset.index);
 
 				// this keeps our image scaled the right way
 				if (window.innerWidth > window.innerHeight) viewBox.firstElementChild.className = 'widescreen';

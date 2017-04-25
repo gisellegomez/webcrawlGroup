@@ -1,10 +1,15 @@
 from flask import Flask, render_template, url_for, request
 from searcher import *
+import re
+import requests
+from lxml import etree, objectify
 
 rgxThumb = re.compile(r"/thumb/", re.IGNORECASE)
 rgxJpg = re.compile(r"\.jpg/.+$")
 rgxJPG = re.compile(r"\.JPG/.+$")
 resulting = []
+category = []
+
 def getRealImgURL(url):
 
 	realURL = rgxThumb.sub('/', url)
@@ -13,6 +18,14 @@ def getRealImgURL(url):
 
 	return realURL
 
+def strip_ns(tree):
+    for node in tree.iter():
+        try:
+            has_namespace = node.tag.startswith('{')
+        except AttributeError:
+            continue
+        if has_namespace:
+            node.tag = node.tag.split('}', 1)[1]
 
 app = Flask(__name__)
 
@@ -24,21 +37,63 @@ def index():
 @app.route('/description', methods=['POST'])
 def my_link():
 	index = request.form.get('n')
-	print (index)
+	# print (index)
 	with open('results.txt', 'r') as f:
 		data = f.read()
-	print(data)
 
-	data = data.split(', | \n')
-	print(data)
+	data = data.splitlines()
+	index2 = int(index)+1
+	body = data[int(index):index2]
+	body = str(body).split('^')
+	# category = body[1]
+	body = body[3]
 
-	# split string description into list of paragraphs
-
-	body = data[index][3].splitlines()
 	if not body:
 		return '', 404
 	else:
 		return render_template('description.html', body=body), 200
+
+@app.route('/nutrition', methods=['POST'])
+def my_nutrition():
+	search = request.form.get('n')
+	print(category)
+	rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+search+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+	body = rawpage.content
+	root = etree.fromstring(body)
+	strip_ns(root)
+
+	webUrl = root.xpath('//ndbno/text()')
+
+	rawpage = requests.get("https://api.nal.usda.gov/ndb/reports/?ndbno="+webUrl[0]+"&type=b&format=xml&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+	body = rawpage.content
+	root = etree.fromstring(body)
+	strip_ns(root)
+
+	print(root)
+	if not root:
+		return '', 404
+	else:
+		return render_template('description.html', body=root), 200
+
+@app.route('/sources', methods=['POST'])
+def my_source():
+	index = request.form.get('n')
+	# print (index)
+	with open('results.txt', 'r') as f:
+		data = f.read()
+
+	data = data.splitlines()
+	index2 = int(index)+1
+	body = data[int(index):index2]
+	body = str(body).split('^')
+	body = body[4]
+	# split string description into list of paragraphs
+
+	# body = data[index][3].splitlines()
+	if not body:
+		return '', 404
+	else:
+		return render_template('sources.html', body=body), 200
 
 @app.route('/results', methods=['POST'])
 def results():
@@ -58,7 +113,7 @@ def results():
 	for k in resulting:
 		for j in k:
 			results.write(j)
-			results.write(",")
+			results.write("^")
 		results.write('\n')
 	results.close()
 	# print(resulting)
