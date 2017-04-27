@@ -56,24 +56,48 @@ def my_link():
 @app.route('/nutrition', methods=['POST'])
 def my_nutrition():
 	search = request.form.get('n')
-	print(category)
-	rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+search+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+	index = request.form.get('i')
+	print(search)
+	print(index)
+
+	with open('results.txt', 'r') as f:
+		data = f.read()
+
+	data = data.splitlines()
+	index2 = int(index)+1
+	body = data[int(index):index2]
+	body = str(body).split('^')
+
+	category = body[1]
+	if 'Fruits' in category or 'Desserts' in category:
+		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+search+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+	else:
+		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q=" +body[0]+ "&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	body = rawpage.content
 	root = etree.fromstring(body)
 	strip_ns(root)
 
 	webUrl = root.xpath('//ndbno/text()')
-
 	rawpage = requests.get("https://api.nal.usda.gov/ndb/reports/?ndbno="+webUrl[0]+"&type=b&format=xml&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	body = rawpage.content
 	root = etree.fromstring(body)
 	strip_ns(root)
 
-	print(root)
+	webUrl = root.xpath('//nutrient')
+	result = []
+	for k in webUrl:
+		name = k.get('name')
+		unit = k.get('unit')
+		value = k.get('value')
+		nutrient = name+" "+value+" "+unit
+		result.append(nutrient)
+
+	# print(result)
+
 	if not root:
 		return '', 404
 	else:
-		return render_template('description.html', body=root), 200
+		return render_template('nutrients.html', results=result), 200
 
 @app.route('/sources', methods=['POST'])
 def my_source():

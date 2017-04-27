@@ -184,7 +184,7 @@
 			return false;
 		},
 
-		getNutritionalInfo = function(value) {
+		getNutritionalInfo = function(value, index) {
 			var request = new XMLHttpRequest(),
 				delta;
 
@@ -196,7 +196,7 @@
 							boxNutrition.innerHTML = request.response;
 							break;
 						default:
-							boxNutrition.innerHTML = 'Cannot retrieve Nutrition.';
+							boxNutrition.innerHTML = 'No nutritional info found.';
 							break;
 					}
 				}
@@ -204,7 +204,7 @@
 			request.open('POST', '/nutrition', true);
 			request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			request.responseType = 'text';
-			request.send('n=' + value);
+			request.send('n=' + value +'&i=' + index);
             console.log(value)
 			delta = window.performance.now();
 		},
@@ -217,7 +217,7 @@
 				boxImg.src = event.target.src; // set image source
 				boxTitle.innerHTML = event.target.previousElementSibling.innerHTML;
 
-				getNutritionalInfo(searchField.value);
+				getNutritionalInfo(searchField.value, event.target.parentElement.dataset.index);
 				boxDetails.innerHTML = "Retrieving details...";
 
 				// request full text from server
