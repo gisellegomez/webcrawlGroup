@@ -81,13 +81,13 @@ def my_nutrition():
 			for k in searchFact:
 				if k in body[3]:
 					search = k
-		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+search+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+str(search)+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	else:
 		if len(searchFact) > 1:
 			for k in searchFact:
 				if k in body[0]:
 					search = k
-		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q=" +search+ "&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q=" +str(search)+ "&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	body = rawpage.content
 	root = etree.fromstring(body)
 	strip_ns(root)
