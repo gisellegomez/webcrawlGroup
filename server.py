@@ -157,7 +157,43 @@ def results():
 	results.close()
 	# print(resulting)
 	for result in resulting:
+		if "None"  in result[2]:
+			result[2] = "http://vignette3.wikia.nocookie.net/joke-battles/images/f/f0/Snacks-512.png/revision/latest?cb=20161115030953"
 		result[2] = getRealImgURL(result[2])
+		stuff = str(result[2]).split(".png")
+
+		if len(stuff) > 1:
+			result[2] = stuff[0]+".png"
+		else:
+			result[2] = str(stuff[0])
+
+		stuff = str(result[2]).split(".jpeg")
+
+		if len(stuff) > 1:
+			result[2] = stuff[0] + ".jpeg"
+		else:
+			result[2] = str(stuff[0])
+
+		stuff = str(result[2]).split(".jpg")
+
+		if len(stuff) > 1:
+			result[2] = stuff[0] + ".jpg"
+		else:
+			result[2] = str(stuff[0])
+
+		stuff = str(result[2]).split(".JPG")
+
+		if len(stuff) > 1:
+			result[2] = stuff[0] + ".JPG"
+		else:
+			result[2] = str(stuff[0])
+
+		stuff = str(result[2]).split(".svg")
+
+		if len(stuff) > 1:
+			result[2] = stuff[0] + ".svg"
+		else:
+			result[2] = str(stuff[0])
 
 	if not resulting:
 		# no results for search

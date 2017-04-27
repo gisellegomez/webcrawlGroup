@@ -150,6 +150,7 @@
 				resultsContainer.innerHTML = "";
 
 			} else if (searchField.value !== lastSearch) {
+			    lastSearch = "";
 			    resultsContainer.innerHTML = "";
 				waitingForResults = true;
 				lastSearch = searchField.value;
