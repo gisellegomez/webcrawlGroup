@@ -57,8 +57,14 @@ def my_link():
 def my_nutrition():
 	search = request.form.get('n')
 	index = request.form.get('i')
-	print(search)
-	print(index)
+	search = search.split(" ")
+	searchFact = []
+	if len(search) > 1:
+		for k in search:
+			if "OR" in k or "AND" in k:
+				continue
+			else:
+				searchFact.append(k)
 
 	with open('results.txt', 'r') as f:
 		data = f.read()
@@ -69,10 +75,19 @@ def my_nutrition():
 	body = str(body).split('^')
 
 	category = body[1]
+
 	if 'Fruits' in category or 'Desserts' in category:
+		if len(searchFact) > 1:
+			for k in searchFact:
+				if k in body[3]:
+					search = k
 		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q="+search+"&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	else:
-		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q=" +body[0]+ "&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
+		if len(searchFact) > 1:
+			for k in searchFact:
+				if k in body[0]:
+					search = k
+		rawpage = requests.get("https://api.nal.usda.gov/ndb/search/?format=xml&q=" +search+ "&max=1&offset=0&ds=Standard%20Reference&api_key=UpWx85gGQQoabxNYrWtIf7eDJ4tQSwkzcllpAqwF")
 	body = rawpage.content
 	root = etree.fromstring(body)
 	strip_ns(root)
