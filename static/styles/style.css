@@ -161,6 +161,10 @@ footer {
 		max-height: 32vw;
 		margin: 0.25rem;
 	}
+	.result > img {
+		width: 30vw;
+		height: 30vw;
+	}
 }
 @media (max-width:500px){
 	.result {
@@ -168,6 +172,11 @@ footer {
 		max-width: 96vw;
 		max-height: 96vw;
 		margin: 0.25rem;
+	}
+
+	.result > img {
+		width: 90vw;
+		height: 90vw;
 	}
 }
 @media (min-width:500px) and (max-width:999px){
@@ -177,11 +186,15 @@ footer {
 		max-height: 48vw;
 		margin: 0.25rem;
 	}
+
+	.result > img {
+		width: 45vw;
+		height: 45vw;
+	}
 }
 
 .result > img {
-	width: 400px;
-	height: 400px;
+	object-fit: cover;
 	box-shadow: 0 0 4px #666;
 }
 
