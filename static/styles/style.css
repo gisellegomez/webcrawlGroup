@@ -39,7 +39,7 @@ footer {
 	outline: none;
 	border: none;
 	margin-left: 2rem;
-	margin-right: 2rem;
+	margin-right: 1rem;
 	text-align: center;
 	color: #222;
 }
@@ -51,6 +51,7 @@ footer {
 	border: none;
 	background-color: #c12;
 	color: #fff;
+	margin-right: 1rem;
 }
 
 #resultsContainer {
