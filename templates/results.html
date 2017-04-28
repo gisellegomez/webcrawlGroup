@@ -1,5 +1,5 @@
 {% for r in results %}
-	<div class="result" data-index="{{ loop.index0 }}">  {# current index of loop (the 'index0' ensures 0-indexed value) #}
+	<div class="result" data-index="{{ index + loop.index0 }}">  {# current index of loop (the 'index0' ensures 0-indexed value) #}
 		<span>{{ r[0] }}</span> {# Name #}
 		<img src="{{ r[2] }}"> {# Image URL #}
 	</div>

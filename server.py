@@ -204,7 +204,7 @@ def results():
 	else:
 		# render results for client
 		count = index + count
-		return render_template('results.html', results=resulting[index:count]), 200
+		return render_template('results.html', results=resulting[index:count], index=index), 200
 
 if __name__ == '__main__':
 	app.run(debug=True)
