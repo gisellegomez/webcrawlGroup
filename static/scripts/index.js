@@ -13,6 +13,7 @@
 
 	const
 		searchField = document.getElementById('searchField'),
+		searchBtn = document.getElementById('searchBtn'),
 		resultsContainer = document.getElementById('resultsContainer'),
 		feedback = document.getElementById('feedback'),
 		viewBox = document.getElementById('viewBox'),
@@ -164,7 +165,9 @@
 		getMoreResults = function(event) {
 		
 			var totalHeight,
-				visibleHeight;
+				visibleHeight,
+				currentWidth,
+				offset;
 
 			// get amount user has scrolled down (in pixels)
 			if (window.pageYOffset !== undefined) scrolledAmount = window.pageYOffset;
@@ -173,11 +176,14 @@
 
 			if (waitingForResults || haveAllResults || searchField.value === "") return;
 
-			totalHeight = document.body.clientHeight;
+			totalHeight = resultsContainer.clientHeight;
 			visibleHeight = window.innerHeight;
+			currentWidth = window.innerWidth;
+
+			offset = (1 + (500 / currentWidth)) >> 0; // if currentWidth <= 500: offset is 2 else offset is 1
 
 			// if user close enough to bottom: get more results
-			if ((totalHeight - scrolledAmount) < (visibleHeight + 200)) {
+			if ((totalHeight - scrolledAmount) < (visibleHeight * offset)) {
 				waitingForResults = true;
 				requestSearch(lastSearch, resultsContainer.children.length, MAX_RESULTS);
 			}
@@ -248,6 +254,8 @@
 	// hook up our event listeners
 	window.addEventListener('scroll', getMoreResults);
 	searchField.addEventListener('change', handleSearch);
+	searchBtn.onclick = handleSearch;
+
 	resultsContainer.addEventListener('click', showViewBox);
 	viewBox.addEventListener('click', hideViewBox);
 	viewBoxBtn.addEventListener('click', hideViewBox);
