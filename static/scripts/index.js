@@ -13,6 +13,7 @@
 
 	const
 		searchField = document.getElementById('searchField'),
+		searchBtn = document.getElementById('searchBtn'),
 		resultsContainer = document.getElementById('resultsContainer'),
 		feedback = document.getElementById('feedback'),
 		viewBox = document.getElementById('viewBox'),
@@ -248,6 +249,8 @@
 	// hook up our event listeners
 	window.addEventListener('scroll', getMoreResults);
 	searchField.addEventListener('change', handleSearch);
+	searchBtn.onclick = handleSearch;
+
 	resultsContainer.addEventListener('click', showViewBox);
 	viewBox.addEventListener('click', hideViewBox);
 	viewBoxBtn.addEventListener('click', hideViewBox);
